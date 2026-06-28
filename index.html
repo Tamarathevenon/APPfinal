@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Método de Regulación Emocional Express</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        @keyframes pulse-breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.5); opacity: 1; }
+        }
+        .animate-breathe { animation: pulse-breathe 8s ease-in-out infinite; }
+        .fade-in { animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="bg-slate-50 min-h-screen p-4 flex items-center justify-center">
+
+    <div id="root" class="w-full max-w-lg"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        function BreatheSession({ onComplete }) {
+            return (
+                <div className="text-center space-y-8 p-6 fade-in">
+                    <h2 className="text-2xl font-bold text-teal-900">Respiración Guiada</h2>
+                    <div className="flex justify-center items-center py-10">
+                        <div className="w-40 h-40 bg-gradient-to-br from-teal-400 to-emerald-400 rounded-full animate-breathe shadow-xl opacity-90"></div>
+                    </div>
+                    <div className="bg-white p-8 rounded-3xl border border-teal-100 shadow-inner text-teal-800 text-left">
+                        <p className="leading-relaxed text-lg font-medium">Inhala suavemente mientras el círculo crece... exhala muy lento al contraerse.</p>
+                        <p className="mt-4 text-teal-600 italic">Tu cuerpo sabe cómo calmarse. Solo dale este espacio.</p>
+                    </div>
+                    <button onClick={onComplete} className="w-full py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-2xl shadow-lg transition-all active:scale-95">
+                        Me siento mejor
+                    </button>
+                </div>
+            );
+        }
+
+        function GuidedSensorySession({ onComplete }) {
+            const [step, setStep] = useState(0);
+            
+            const steps = [
+                { title: "5 cosas que ves", text: "Mira a tu alrededor con calma. ¿Ves el color de una pared? ¿La luz que entra por la ventana? ¿Alguna planta? Nota los detalles pequeños.", icon: "👀" },
+                { title: "4 cosas que puedes tocar", text: "Siente las texturas. La suavidad de tu ropa, la firmeza de la mesa, la temperatura de tus manos, o la textura de tu pelo. Tómate tu tiempo.", icon: "🖐️" },
+                { title: "3 cosas que escuchas", text: "Cierra los ojos un momento si te ayuda. ¿Escuchas el viento? ¿El sonido de tu propia respiración? ¿Algún ruido lejano o un motor?", icon: "👂" },
+                { title: "2 cosas que hueles", text: "A veces el aire no tiene un olor marcado, y está bien. Pero quizás detectas el aroma de un café, un libro viejo, o simplemente el olor limpio de tu habitación.", icon: "👃" },
+                { title: "1 cosa que puedes probar", text: "Nota el sabor en tu boca. Puede ser el rastro de agua que bebiste, el sabor de una fruta o simplemente la frescura de tu boca. Saborea este momento de calma.", icon: "🍎" }
+            ];
+
+            return (
+                <div className="text-center space-y-6 p-6 fade-in">
+                    <h2 className="text-2xl font-bold text-teal-900">Aterrizando en el presente</h2>
+                    <div className="bg-white p-8 rounded-3xl border border-teal-100 text-teal-900 min-h-[350px] flex flex-col justify-center items-center space-y-6 shadow-sm border-2">
+                        <div className="text-6xl">{steps[step].icon}</div>
+                        <h3 className="text-2xl font-bold text-teal-800">{steps[step].title}</h3>
+                        <p className="text-lg leading-relaxed text-teal-700 font-medium px-2">{steps[step].text}</p>
+                    </div>
+                    
+                    <button 
+                        onClick={() => step < 4 ? setStep(step + 1) : onComplete()} 
+                        className="w-full py-4 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-2xl shadow-lg transition-all active:scale-95"
+                    >
+                        {step < 4 ? "Siguiente paso" : "Me siento mejor"}
+                    </button>
+                </div>
+            );
+        }
+
+        function App() {
+            const [view, setView] = useState('selection');
+            const [selectedSymptoms, setSelectedSymptoms] = useState([]);
+
+            const symptoms = [
+                { id: 1, text: "Siento tensión en hombros y mandíbula", level: 1, icon: "👤" },
+                { id: 2, text: "Me está costando dormir", level: 2, icon: "😔" },
+                { id: 3, text: "Siento el corazón acelerado", level: 3, icon: "❤️" },
+                { id: 4, text: "No tengo paciencia", level: 2, icon: "😤" },
+                { id: 5, text: "Me irrito cuando me hablan", level: 2, icon: "😡" },
+                { id: 6, text: "Siento la mente un poco dispersa", level: 1, icon: "🧠" },
+                { id: 7, text: "Siento cansancio pero no puedo parar", level: 1, icon: "🔋" },
+                { id: 8, text: "Siento presión en el pecho", level: 3, icon: "😫" },
+                { id: 9, text: "Se me hace difícil tomar decisiones", level: 1, icon: "⚖️" },
+                { id: 10, text: "Siento que el tiempo no me alcanza", level: 2, icon: "⏱️" }
+            ];
+
+            const toggleSymptom = (id) => {
+                setSelectedSymptoms(prev => 
+                    prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
+                );
+            };
+
+            const getAdvice = (id) => {
+                const adviceMap = {
+                    1: "Entiendo que tu cuerpo esté cargando con mucho ahora; a veces los hombros y la mandíbula se tensan intentando sostener lo que nuestra mente no puede procesar. Vamos a soltarlo juntos, con delicadeza. Cierra los ojos un momento y deja que tus hombros caigan hacia abajo, como si se derritieran. Rota tus hombros hacia atrás muy lentamente, una, dos, tres veces, inhalando profundo. Al exhalar, deja que tu mandíbula se separe suavemente. No tienes que cargar con todo al mismo tiempo. Estás haciendo lo mejor que puedes, y está bien dejarlo descansar por ahora.",
+                    2: "Entiendo profundamente que el descanso se sienta difícil ahora. Cuando la mente no quiere apagar, es porque está intentando protegerte o resolver cosas pendientes. Vamos a hacerlo distinto hoy: unos 30 minutos antes de tu hora de dormir, por favor deja las pantallas a un lado; ese brillo le dice a tu cerebro que siga alerta. Busca papel y lápiz, y escribe ahí todo lo que te preocupa o lo que tienes pendiente para mañana. Al soltarlo en el papel, le das permiso a tu cabeza para que deje de cargar con eso. Después, busca una postura cómoda, cierra los ojos y solo siente cómo el aire entra y sale. No busques dormir, solo busca respirar consciente, suave y lento, una vez tras otra, hasta que tu cuerpo sepa, finalmente, que es momento de descansar. Estás a salvo, ya hiciste suficiente por hoy.",
+                    3: "Es completamente normal que tu corazón esté latiendo con fuerza ahora mismo; es la forma en que tu cuerpo intenta cuidarte ante un momento de gran carga. Por favor, no te asustes de esa sensación, es solo una respuesta física momentánea, no es algo permanente. Quiero pedirte que, sin prisa, intentes apoyar tus manos sobre tu pecho o sobre tus rodillas. Siente cómo el aire entra por tu nariz, expandiendo tus pulmones, y déjalo salir muy suavemente, como si fuera un suspiro largo. Tu cuerpo es sabio y sabe cómo volver a su ritmo de calma; solo necesita que le des permiso para soltar, un latido a la vez. Estás a salvo, todo está bien.",
+                    4: "La impaciencia es, en realidad, una señal de que tu sistema interno está agotado y ya no puede sostener el ritmo frenético que te estás exigiendo. Cuando sientas que ya no puedes esperar más, detente un momento. No tienes que resolver el mundo en este segundo; el mundo puede esperar un instante mientras tú recuperas el aliento. Regálate un minuto de silencio, cierra los ojos, y recuerda que tu valor no depende de cuántas cosas termines hoy. Estás haciendo suficiente, y tienes permiso para bajar la velocidad y simplemente ser. Estás a salvo, todo irá encontrando su lugar a su debido tiempo.",
+                    5: "Es completamente comprensible que te sientas así. Cuando llevamos mucho ruido acumulado por dentro, cualquier interacción, por pequeña que sea, se siente como una invasión. No te sientas mal por esta reacción; es una señal clara de que tu sistema está sobrecargado y está intentando protegerte, pidiendo desesperadamente un respiro. No tienes la obligación de responder a nadie ni de estar disponible en este momento. Está bien poner límites, decir que necesitas un momento de silencio y retirarte a un lugar donde puedas recuperar tu centro. Date permiso para pausar las conversaciones, apagar el ruido del mundo y simplemente respirar en tu propia compañía. Estás haciendo lo correcto al priorizar tu calma.",
+                    6: "Siento profundamente que te sientas disperso; es esa sensación de que tu mente intenta abarcar mil mundos a la vez mientras tú intentas mantener el equilibrio. No te juzgues, no es falta de capacidad ni que algo esté roto en ti, es solo que tu sistema está sobrecargado procesando demasiada información. Cuando sientas que tu mente salta de aquí para allá, por favor, no intentes forzarla a concentrarse. Detente un instante, pon los pies firmes sobre el suelo y simplemente observa tu respiración. Tienes permiso absoluto para simplificar, para dejar de lado lo que no es urgente y enfocarte solo en una cosa, la más pequeña y sencilla que tengas frente a ti. Todo lo demás puede esperar; tu calma es tu prioridad hoy.",
+                    7: "Reconozco ese cansancio que se siente como un peso que no puedes soltar, como si tu cuerpo estuviera exhausto pero tu mente te susurrara que aún falta camino. Esa contradicción agota más que el trabajo mismo. Quiero decirte algo importante: no tienes que probar nada, ni cumplir con nadie más hoy. Tu valor no se mide por lo que logras, sino por cómo te cuidas. Por favor, regálate permiso para detenerte. No significa rendirse, significa elegirte. Siéntate, deja que tus músculos se aflojen, cierra los ojos y simplemente siente el apoyo de la silla o el suelo bajo ti. No tienes que hacer nada más en este minuto, solo estar aquí contigo, descansando de tanto esfuerzo. Estás a salvo y es momento de bajar la guardia.",
+                    8: "Siento profundamente que experimentes esa presión en el pecho; es una sensación física intensa y sé que puede asustar, pero por favor, intenta recordar ahora mismo que tu cuerpo está simplemente intentando protegerte de una forma que se siente pesada. No eres esa sensación, esa sensación es solo una nube pasajera que está cruzando tu cuerpo. Te pido que, sin prisa, intentes llevar una mano a tu corazón y otra al vientre. Siente cómo, al inhalar muy despacio, tu cuerpo se expande con amabilidad, y al exhalar, dejas ir un poco de ese peso. No tienes que resolver nada en este instante, no tienes que cargar con nada más ahora. Solo permítete respirar, suave y profundo, dándole a tu pecho el espacio que necesita para soltarse, poco a poco, con cada aliento. Estás a salvo, aquí y ahora.",
+                    9: "Entiendo profundamente que te sientas bloqueado/a ahora mismo; cuando la mente lleva demasiado tiempo procesando, la capacidad de elegir se agota y es totalmente natural. No es que hayas perdido tu juicio, es que tu sistema interno te está pidiendo un descanso urgente. No te fuerces a buscar la solución perfecta ni la decisión 'correcta' en este momento; esa presión solo te paraliza más. Te invito a hacer algo distinto: deja de buscar respuestas hoy. Si la elección no es vital, suéltala. Si tienes que decidir algo, elige lo primero que resuene un poco con tu bienestar, sin juzgarte después. Regálate el permiso de no saber, de esperar a que la claridad vuelva cuando estés más descansado. Estás haciendo lo que puedes, y eso es más que suficiente. Tómate un respiro, bebe agua y recuerda que el mañana siempre trae una nueva perspectiva.",
+                    10: "Siento profundamente esa angustia que te genera la sensación de que las horas se escapan entre tus dedos, como si el tiempo fuera un enemigo que siempre va un paso por delante de ti. Esa prisa constante no es tuya, es una presión externa que te has acostumbrado a cargar. Quiero que sepas algo vital hoy: el valor de tu día no se mide por la cantidad de tareas que logras tachar de tu lista, ni por qué tan rápido puedes moverte. Por favor, detente un segundo. Respira. Si el tiempo no te alcanza, quizá no es que falten horas, sino que el peso que intentas llevar es demasiado grande para un solo día. Date permiso, hoy, de soltar la urgencia. Elige solo una tarea, la más pequeña, la más sencilla, y hazla con total presencia, sin mirar el reloj. Todo lo demás puede esperar, de verdad. Estás haciendo suficiente, y el tiempo, aunque parezca inmenso, siempre es más amable cuando dejamos de correr detrás de él. Descansa en este momento, estás a salvo."
+                };
+                return adviceMap[id] || "Respira profundo. Estás haciendo lo mejor que puedes y eso es suficiente. 🌿";
+            };
+
+            const analyzeState = () => {
+                if (selectedSymptoms.length === 1) {
+                    setView('result');
+                    return;
+                }
+
+                const selected = symptoms.filter(s => selectedSymptoms.includes(s.id));
+                const maxLevel = Math.max(...selected.map(s => s.level));
+                
+                if (maxLevel === 3) setView('breathe');
+                else if (maxLevel === 2) setView('sensory');
+                else setView('result');
+            };
+
+            return (
+                <div className="bg-white p-6 rounded-3xl shadow-xl w-full border border-teal-50">
+                    {view === 'selection' ? (
+                        <div className="space-y-6 fade-in">
+                            <h1 className="text-3xl font-bold text-teal-900">Método de Regulación Emocional Express</h1>
+                            <p className="text-teal-600 font-medium italic">¿Cómo te sientes hoy? Selecciona lo que sientes para acompañarte mejor.</p>
+                            <div className="space-y-3 h-96 overflow-y-auto pr-2">
+                                {symptoms.map(s => {
+                                    const isSelected = selectedSymptoms.includes(s.id);
+                                    return (
+                                        <button 
+                                            key={s.id} 
+                                            onClick={() => toggleSymptom(s.id)}
+                                            className={`w-full p-4 text-left rounded-2xl border transition-all duration-300 flex items-center ${
+                                                isSelected 
+                                                ? 'border-teal-500 bg-teal-50 text-teal-900 shadow-md font-semibold' 
+                                                : 'border-teal-100 text-slate-700 hover:border-teal-200 hover:bg-slate-50'
+                                            }`}
+                                        >
+                                            <span className="text-2xl mr-3">{s.icon}</span>
+                                            <span className="font-medium flex-grow">{s.text}</span>
+                                            {isSelected && <span className="text-teal-600 font-bold text-xl ml-2">✓</span>}
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                            <button 
+                                onClick={analyzeState}
+                                disabled={selectedSymptoms.length === 0}
+                                className={`w-full py-5 rounded-2xl font-bold text-white text-lg transition-all duration-300 shadow-lg ${
+                                    selectedSymptoms.length > 0 ? 'bg-teal-600 hover:bg-teal-700 active:scale-95' : 'bg-slate-200 cursor-not-allowed'
+                                }`}
+                            >
+                                Buscar calma
+                            </button>
+                        </div>
+                    ) : view === 'result' ? (
+                        <div className="text-center space-y-8 py-6 fade-in">
+                            <h2 className="text-2xl font-bold text-teal-900">Un consejo para ti</h2>
+                            <div className="bg-teal-50 p-8 rounded-3xl border border-teal-100 text-teal-800 text-left shadow-inner">
+                                <p className="leading-relaxed text-lg font-medium">
+                                    {getAdvice(selectedSymptoms[0])}
+                                </p>
+                            </div>
+                            <button onClick={() => { setView('selection'); setSelectedSymptoms([]); }} className="w-full py-3 text-teal-600 font-bold hover:bg-teal-50 rounded-2xl transition-all">← Volver a empezar</button>
+                        </div>
+                    ) : view === 'sensory' ? (
+                        <GuidedSensorySession onComplete={() => { setView('selection'); setSelectedSymptoms([]); }} />
+                    ) : (
+                        <BreatheSession onComplete={() => { setView('selection'); setSelectedSymptoms([]); }} />
+                    )}
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
